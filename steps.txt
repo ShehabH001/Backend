@@ -1,0 +1,14 @@
+1 - install javascript runtime compiler (NODE.js)
+2 - install npm (node package manager) in project directory --> run this command npm init -y
+3 - install express.js (in project directory --> run this command 'npm install express --save')
+4 - intall nodemon to restart the server if there is any changes --> npm i nodemon
+5 - change scripts --> 
+ "scripts": {
+    "dev": "nodemon app.mjs"
+  },
+  "type": "module",
+6 - to run the app --> npm run dev
+7 - install dotenv package --> npm install dotenv
+8 - create .env file 
+9 - install jsonwebtoken  --> npm install jsonwebtoken
+10 - install pg -> npm install pg

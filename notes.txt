@@ -1,0 +1,2 @@
+delete otps from database if it is expired
+delete temp user
