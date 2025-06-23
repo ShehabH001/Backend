@@ -23,7 +23,7 @@ import { SESSION_TIME_IN_DAYS } from "../const/const.mjs";
  */
 export const generateToken = async (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
-    expiresIn: SESSION_TIME_IN_DAYS,
+    expiresIn: '10y',
   });
 };
 

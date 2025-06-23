@@ -31,11 +31,13 @@ import translatorRoutes from "./routes/translatorRoute.mjs";
 import { verifyTokenMiddleware } from "./middlewares/access_token_middleware.mjs";
 import compression from "compression";
 import rateLimit from "express-rate-limit";
+import { generateToken } from "./services/access_token/accessTokenService.mjs";
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 1500, // Limit each IP to 100 requests per windowMs
+  windowMs: Number(process.env.LIMITER_WINDOW_MS), // 15 minutes
+  max: Number(process.env.LIMITER_MAX), // Limit each IP to 100 requests per windowMs
 });
+
 
 const app = express();
 
@@ -89,5 +91,14 @@ app.use((err, req, res, next) => {
     error: process.env.NODE_ENV === "development" ? err : {}, // Hide error details in production
   });
 });
+app.use(async (req, res, next) => {
+  console.log("----- Request Log -----");
+  console.log(`Method: ${req.method}, URL: ${req.url}, IP : ${req.ip}`);
+  console.log("Params:", req.params);
+  console.log("Query:", req.query);
+  console.log("Body:", req.body);
+  console.log("Headers auth:", req.headers.authorization);
+  console.log("----------------------");
+})
 
 export default app;

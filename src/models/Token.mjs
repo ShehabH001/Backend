@@ -2,7 +2,7 @@ import pool from "../database/connection.mjs";
 const gumballPool = pool.gumballPool;
 
 class Token {
-  static async addToken(book_id, tokens) {
+  static async addTokens(book_id, tokens) {
     let queryBody = `INSERT INTO token (
             book_id,
             content,
@@ -12,13 +12,13 @@ class Token {
             end_page,
             start_chapter,
             end_chapter
-            ) VALUES (`;
-    let values = [book_id];
+            ) VALUES `;
+    let values = [];
     for (let i = 0; i < tokens.length; i++) {
-      queryBody += `$${i * 8 + 2}, $${i * 8 + 3}, $${i * 8 + 4}, $${
-        i * 8 + 5
-      }, $${i * 8 + 6}, $${i * 8 + 7}, $${i * 8 + 8}, $${i * 8 + 9}), `;
+      queryBody += `( $${i * 8 + 1}, $${i * 8 + 2}, $${i * 8 + 3}, $${
+        i * 8 + 4}, $${i * 8 + 5}, $${i * 8 + 6}, $${i * 8 + 7}, $${i * 8 + 8}), `;
       values.push(
+        Number(book_id),
         tokens[i].content,
         tokens[i].sequence,
         tokens[i].size,
@@ -28,7 +28,9 @@ class Token {
         tokens[i].end_chapter
       );
     }
-    queryBody = queryBody.slice(0, -2) + ");";
+    queryBody = queryBody.slice(0, -2) + ";";
+    console.log("Query Body:", queryBody);
+    console.log("Values:", values);
     const result = await gumballPool.query(queryBody, values);
     return result.rowCount;
   }

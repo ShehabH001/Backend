@@ -108,6 +108,9 @@ export const getBookById = async (req, res) => {
       return res.status(400).json({ message: "Book ID is required" });
     }
     const book = await Book.getBookById(book_id);
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
+    }
     return res.status(200).json(book);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -270,6 +273,21 @@ export const getBooksWithFlitter = async (req, res) => {
     return res.status(200).json(books);
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+};
+
+export const uploadBook = async (req, res) => {
+  try {
+    const { id: book_id } = req.params;
+    const { metadata, tokens } = req.body;
+    console.log("Book upload request received:", book_id, metadata, tokens);
+    await Token.addTokens(book_id, tokens);
+    await Book.addBookMetadata(book_id, metadata);
+    // Placeholder for book upload logic
+    return res.status(200).json({ message: "Book uploaded successfully" });
+  } catch (err) {
+    console.error("Error uploading book:", err);
+    return res.status(500).json({ message: err.message });
   }
 };
 

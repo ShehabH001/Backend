@@ -36,6 +36,7 @@ class Book {
     const query = `SELECT * FROM product_template WHERE id = $1`;
     const values = [book_id];
     const { rows } = await darwinPool.query(query, values);
+    console.log("rows", rows);
     return rows[0];
   }
 
@@ -111,6 +112,22 @@ class Book {
     const values = [book_id];
     const { rows } = await gumballPool.query(query, values);
     return rows;
+  }
+
+  static async addBookMetadata(book_id, metadata) {
+    const query = `INSERT INTO book_metadata (book_id, page_count, chapter_count, book_encoding, book_index, target_links, text_direction)
+    values ($1, $2, $3, $4, $5, $6, $7)`;
+    const values = [
+      book_id,
+      metadata.page_count,
+      metadata.chapter_count,
+      metadata.book_encoding,
+      metadata.book_index,
+      metadata.target_links,
+      metadata.text_direction,
+    ];
+    const result = await gumballPool.query(query, values);
+    return result.rowCount > 0;
   }
 
   static async getBookReviews(book_id) {

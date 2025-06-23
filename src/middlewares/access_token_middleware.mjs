@@ -17,6 +17,7 @@ import { verifyToken } from "../services/access_token/accessTokenService.mjs";
 export const verifyTokenMiddleware = async (req, res, next) => {
   try {
     const authorizationHeader = req.headers["authorization"];
+    console.log("Authorization Header:", authorizationHeader);
     if (!authorizationHeader)
       return res.status(401).send("Access denied. No token provided.");
 

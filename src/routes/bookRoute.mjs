@@ -40,6 +40,7 @@ import {
   getMetadata,
   validate_cache,
   getBooksWithFlitter,
+  uploadBook,
 } from "../controllers/bookController.mjs";
 import annotationRoutes from "./annotationRoute.mjs";
 const router = Router();
@@ -57,7 +58,7 @@ router.get("/:id/token/:token_sequence", getToken);
 router.get("/:id/download", downloadBook);
 router.get("/:id/metadata", getMetadata);
 router.post("/fliters", getBooksWithFlitter); // Get all flitters for books
-
+router.post("/:id", uploadBook);
 // Annotation routes for books
 router.use("/:id/annotations", annotationRoutes);
 
